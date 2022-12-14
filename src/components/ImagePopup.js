@@ -6,18 +6,6 @@ class ImagePopup extends React.Component {
         super(props);
     }
 
-    componentDidUpdate = () => {
-        if (this.props.card.isOpen) {
-            const handleESC = (e) => {
-                if (e.key === "Escape") {
-                    this.props.onClose();
-                    document.removeEventListener("keydown", handleESC);
-                }
-            }
-            document.addEventListener("keydown", handleESC);
-        }
-    }
-
     handleOverlayClose = (e) => {
         if (e.target === e.currentTarget && this.props.card.isOpen) {
             this.props.onClose();

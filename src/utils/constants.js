@@ -15,10 +15,10 @@ export const popupFormAddCard = page.querySelector('.popup__form_add-card');
 export const popupFormChangeAvatar = page.querySelector('.popup__form_refresh-avatar');
 
 export const settings = {
-    formSelector: '.popup__form',
-    inputSelector: '.popup__input',
-    submitButtonSelector: '.popup__submit-btn',
-    inactiveButtonClass: 'popup__submit-btn_invalid',
-    inputErrorClass: 'popup__input_invalid',
-    errorClass: 'popup__input_form-error'
-  };
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__submit-btn',
+  inactiveButtonClass: 'popup__submit-btn_invalid',
+  inputErrorClass: 'popup__input_invalid',
+  errorClass: 'popup__input_form-error'
+};

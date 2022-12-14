@@ -34,23 +34,30 @@ function App() {
     const [userData, setUserData] = React.useState({});
 
     const history = useHistory();
+    const token = localStorage.getItem('token');
 
     React.useEffect(() => {
-        Promise.all([api.getUserInfo()])
-            .then((userData) => {
-                setCurrentUser(userData[0]);
-            })
-            .catch((err) => {
-                console.log('Ошибка. Запрос не выполнен');
-            })
-
-        Promise.all([api.getInitialCards()])
-            .then(([cards]) => {
+        Promise.all([api.getUserInfo(), api.getInitialCards()])
+            .then(([userData, cards]) => {
+                setCurrentUser(userData);
                 setCards(cards);
             })
             .catch((err) => {
                 console.log('Ошибка. Запрос не выполнен');
             })
+
+
+        if (token) {
+            auth.checkToken(token)
+                .then((res) => {
+                    setUserData(res.data);
+                    setLoggedIn(true);
+                    history.push('/');
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+        }
     }, []);
 
     const handleCardLike = (card) => {
@@ -103,6 +110,22 @@ function App() {
         setIsInfoTooltipOpen(false);
     };
 
+    const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || selectedCard.isOpen || isInfoTooltipOpen;
+
+    useEffect(() => {
+        function closeByEscape(evt) {
+            if (evt.key === 'Escape') {
+                closeAllPopups();
+            }
+        }
+        if (isOpen) {
+            document.addEventListener('keydown', closeByEscape);
+            return () => {
+                document.removeEventListener('keydown', closeByEscape);
+            }
+        }
+    }, [isOpen])
+
     const handleUpdateUser = (data) => {
         api.setUserInfo(data)
             .then((res) => {
@@ -137,7 +160,6 @@ function App() {
             })
     }
 
-
     const handleRegister = ({ password, email }) => {
         auth.register({ password, email })
             .then(res => {
@@ -158,7 +180,7 @@ function App() {
             .then((res) => {
                 if (res.token) {
                     localStorage.setItem('token', res.token);
-                    setUserData({email: email})
+                    setUserData({ email: email })
                     setLoggedIn(true);
                     history.push('/');
                 } else {
@@ -174,30 +196,19 @@ function App() {
     }
 
     const handleExit = () => {
-            localStorage.removeItem('token');
-            setUserData({email: ''});
-            setLoggedIn(false);
+        localStorage.removeItem('token');
+        setUserData({ email: '' });
+        setLoggedIn(false);
     }
 
-    React.useEffect(() => {
-        if (localStorage.getItem('token')) {
-            const token = localStorage.getItem('token')
-            auth.getContent(token)
-                .then((res) => {
-                    setUserData(res.data);
-                    setLoggedIn(true);
-                    history.push('/');
-                })
-                .catch((err) => {
-                    console.log(err);
-                })
-        }
-    }, [])
+
+
+
 
     return (
         <div className="page">
             <CurrentUserContext.Provider value={currentUser}>
-                <Header isLoggedIn={loggedIn} userData={userData} onSignOut={handleExit}/>
+                <Header isLoggedIn={loggedIn} userData={userData} onSignOut={handleExit} />
                 <Switch>
                     <ProtectedRoute exact
                         path="/"

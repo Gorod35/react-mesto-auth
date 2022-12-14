@@ -15,12 +15,6 @@ class Main extends React.Component {
 
     static contextType = CurrentUserContext;
 
-    deleteCards(card) {
-        return this.state.cards.filter((c) => {
-            return c._id !== card._id;
-        });
-    }
-
     render() {
         return (
             <main className="content">
@@ -46,7 +40,7 @@ class Main extends React.Component {
                         {
                             this.props.cards.map((card) => {
                                 return (
-                                    <Card key={card._id} card={card} onCardClick={this.props.onCardClick} onCardLike={this.props.onCardLike} onCardDelete={this.props.onCardDelete}/>
+                                    <Card key={card._id} card={card} onCardClick={this.props.onCardClick} onCardLike={this.props.onCardLike} onCardDelete={this.props.onCardDelete} />
                                 );
                             })
                         }

@@ -6,7 +6,7 @@ class Api {
 
     _getResponseData(res) {
         if (!res.ok) {
-            return Promise.reject(`Ошибка: ${res.status}`); 
+            return Promise.reject(`Ошибка: ${res.status}`);
         }
         return res.json();
     }
@@ -15,7 +15,7 @@ class Api {
         return fetch(`${this._link}cards`, {
             headers: this._headers
         })
-        .then(this._getResponseData);
+            .then(this._getResponseData);
 
     }
 
@@ -24,7 +24,7 @@ class Api {
             headers: this._headers
         })
 
-        .then(this._getResponseData);
+            .then(this._getResponseData);
     }
 
     setUserInfo(data) {
@@ -37,7 +37,7 @@ class Api {
             })
         })
 
-        .then(this._getResponseData);
+            .then(this._getResponseData);
     }
 
     addCard(data) {
@@ -47,10 +47,10 @@ class Api {
             body: JSON.stringify({
                 name: data.name,
                 link: data.link,
-                })
+            })
         })
 
-        .then(this._getResponseData);
+            .then(this._getResponseData);
     }
 
     deleteCard(id) {
@@ -59,16 +59,16 @@ class Api {
             headers: this._headers,
         })
 
-        .then(this._getResponseData);
+            .then(this._getResponseData);
     }
 
     changeLikeCardStatus(id, isLiked) {
         if (!isLiked) {
-           return this.dislikeCard(id);
+            return this.dislikeCard(id);
         } else {
-           return this.likeCard(id);
+            return this.likeCard(id);
         }
-     }
+    }
 
     likeCard(id) {
         return fetch(`${this._link}cards/likes/${id}`, {
@@ -76,7 +76,7 @@ class Api {
             headers: this._headers,
         })
 
-        .then(this._getResponseData);
+            .then(this._getResponseData);
     }
 
     dislikeCard(id) {
@@ -85,7 +85,7 @@ class Api {
             headers: this._headers,
         })
 
-        .then(this._getResponseData);
+            .then(this._getResponseData);
     }
 
     setAvatar(link) {
@@ -97,15 +97,15 @@ class Api {
             })
         })
 
-        .then(this._getResponseData);
+            .then(this._getResponseData);
     }
 
 }
 
 export const api = new Api({
-    baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-49/', 
-    headers: {  
-      authorization: '15db24d7-fbd4-4557-a75b-6ba2280bfc57',
-      'Content-Type': 'application/json'
-      }
-  });
+    baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-49/',
+    headers: {
+        authorization: '15db24d7-fbd4-4557-a75b-6ba2280bfc57',
+        'Content-Type': 'application/json'
+    }
+});
